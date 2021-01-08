@@ -90,9 +90,9 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--model_type', type=str, default='U_Net', help='U_Net/R2U_Net/AttU_Net/R2AttU_Net')
     parser.add_argument('--model_path', type=str, default='./models')
-    parser.add_argument('--train_path', type=str, default='../dataset/train/')
-    parser.add_argument('--valid_path', type=str, default='../dataset/valid/')
-    parser.add_argument('--test_path', type=str, default='../dataset/test/')
+    parser.add_argument('--train_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train/')
+    parser.add_argument('--valid_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/valid/')
+    parser.add_argument('--test_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/test/')
     parser.add_argument('--result_path', type=str, default='./result/')
 
     parser.add_argument('--cuda_idx', type=int, default=1)

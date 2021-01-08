@@ -96,8 +96,8 @@ if __name__ == '__main__':
     parser.add_argument('--test_ratio', type=float, default=0.2)
 
     # data path
-    parser.add_argument('--origin_data_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/dataset/ISIC2018_Task1-2_Training_Input')
-    parser.add_argument('--origin_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/dataset/ISIC2018_Task1_Training_GroundTruth')
+    parser.add_argument('--origin_data_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/ISIC2018_Task1-2_Training_Input')
+    parser.add_argument('--origin_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/ISIC2018_Task1_Training_GroundTruth')
     
     parser.add_argument('--train_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train/')
     parser.add_argument('--train_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train_GT/')

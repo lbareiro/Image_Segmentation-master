@@ -7,6 +7,7 @@ import random
 
 def main(config):
     cudnn.benchmark = True
+    config.model_type = 'R2U_Net'#change net to test
     if config.model_type not in ['U_Net','R2U_Net','AttU_Net','R2AttU_Net']:
         print('ERROR!! model_type should be selected in U_Net/R2U_Net/AttU_Net/R2AttU_Net')
         print('Your input for model_type was %s'%config.model_type)
@@ -23,7 +24,7 @@ def main(config):
     
     lr = random.random()*0.0005 + 0.0000005
     augmentation_prob= random.random()*0.7
-    epoch = random.choice([5,5,5,10])#[100,150,200,250]
+    epoch = random.choice([2,2,2,2])#[100,150,200,250]
     decay_ratio = random.random()*0.8
     decay_epoch = int(epoch*decay_ratio)
 

@@ -33,6 +33,8 @@ def main(config):
     config.lr = lr
     config.num_epochs_decay = decay_epoch
 
+    #Prueba de Dey
+    
     print(config)
         
     train_loader = get_loader(image_path=config.train_path,

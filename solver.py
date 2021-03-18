@@ -122,7 +122,7 @@ class Solver(object):
 			# Train for Encoder
 			lr = self.lr
 			best_unet_score = 0.
-			
+			print('DEVICE %s'%self.device)
 			for epoch in range(self.num_epochs):
 
 				self.unet.train(True)
@@ -202,6 +202,7 @@ class Solver(object):
 				JS = 0.		# Jaccard Similarity
 				DC = 0.		# Dice Coefficient
 				length=0
+				print('DEVICE %s'%self.device)
 				for i, (images, GT) in enumerate(self.valid_loader):
 
 					images = images.to(self.device)
@@ -266,6 +267,7 @@ class Solver(object):
 			JS = 0.		# Jaccard Similarity
 			DC = 0.		# Dice Coefficient
 			length=0
+			print('DEVICE %s'%self.device)
 			for i, (images, GT) in enumerate(self.valid_loader):
 
 				images = images.to(self.device)

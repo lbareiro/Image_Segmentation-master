@@ -64,24 +64,24 @@ def get_F1(SR,GT,threshold=0.5):
     return F1
 
 def get_JS(SR,GT,threshold=0.5):
-    # JS : Jaccard similarity
+    # JS : Jaccard similarity #coeficiente de similaridad entre el resultado de lasegmentacion y el ground true
     SR = SR > threshold
     GT = GT == torch.max(GT)
     
-    Inter = torch.sum(((SR+GT)==2).byte())
-    Union = torch.sum(((SR+GT)>=1).byte())
+    Inter = torch.sum(((SR.byte()+GT.byte())==2).byte())
+    Union = torch.sum(((SR.byte()+GT.byte())>=1).byte())
     
     JS = float(Inter)/(float(Union) + 1e-6)
     
     return JS
 
 def get_DC(SR,GT,threshold=0.5):
-    # DC : Dice Coefficient
+    # DC : Dice Coefficient  #coeficiente de DICE entre el resultado de lasegmentacion y el ground true
     SR = SR > threshold
     GT = GT == torch.max(GT)
 
-    Inter = torch.sum(((SR+GT)==2).byte())
-    DC = float(2*Inter)/(float(torch.sum(SR)+torch.sum(GT)) + 1e-6)
+    Inter = torch.sum(((SR.byte()+GT.byte())==2))
+    DC = float(2*Inter)/(float(torch.sum(SR.byte())+torch.sum(GT.byte())) + 1e-6)
 
     return DC
 

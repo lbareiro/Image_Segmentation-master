@@ -96,15 +96,16 @@ if __name__ == '__main__':
     parser.add_argument('--test_ratio', type=float, default=0.2)
 
     # data path
-    parser.add_argument('--origin_data_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/ISIC2018_Task1-2_Training_Input')
-    parser.add_argument('--origin_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/ISIC/ISIC2018_Task1_Training_GroundTruth')
+    # data path
+    parser.add_argument('--origin_data_path', type=str, default='D:\Proyecto Concacyt\VSCode\ISIC\ISIC2018_Task1-2_Training_Input')
+    parser.add_argument('--origin_GT_path', type=str, default='D:\Proyecto Concacyt\VSCode\ISIC\ISIC2018_Task1_Training_GroundTruth')
     
-    parser.add_argument('--train_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train')
-    parser.add_argument('--train_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train_GT')
-    parser.add_argument('--valid_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/valid')
-    parser.add_argument('--valid_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/valid_GT')
-    parser.add_argument('--test_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/test')
-    parser.add_argument('--test_GT_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/test_GT')
+    parser.add_argument('--train_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\train')
+    parser.add_argument('--train_GT_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\train_GT')
+    parser.add_argument('--valid_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\valid')
+    parser.add_argument('--valid_GT_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\valid_GT')
+    parser.add_argument('--test_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\test')
+    parser.add_argument('--test_GT_path', type=str, default='D:\Proyecto Concacyt\VSCode\dataset\test_GT')
 
     config = parser.parse_args()
     print(config)

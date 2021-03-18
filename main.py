@@ -22,10 +22,10 @@ def main(config):
     if not os.path.exists(config.result_path):
         os.makedirs(config.result_path)
     
-    lr = random.random()*0.0005 + 0.0000005
+    lr = 0.0005#random.random()*0.0005 + 0.0000005
     augmentation_prob= random.random()*0.7
     epoch = random.choice([2,2,2,2])#[100,150,200,250]
-    decay_ratio = random.random()*0.8
+    decay_ratio = 0.8#random.random()*0.8
     decay_epoch = int(epoch*decay_ratio)
 
     config.augmentation_prob = augmentation_prob
@@ -91,9 +91,9 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--model_type', type=str, default='U_Net', help='U_Net/R2U_Net/AttU_Net/R2AttU_Net')
     parser.add_argument('--model_path', type=str, default='./models')
-    parser.add_argument('--train_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train/')
-    parser.add_argument('--valid_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/valid/')
-    parser.add_argument('--test_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/test/')
+    parser.add_argument('--train_path', type=str, default='../dataset/train/')
+    parser.add_argument('--valid_path', type=str, default='../dataset/valid/')
+    parser.add_argument('--test_path', type=str, default='../dataset/test/')
     parser.add_argument('--result_path', type=str, default='./result/')
 
     parser.add_argument('--cuda_idx', type=int, default=1)

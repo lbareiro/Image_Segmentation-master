@@ -4,14 +4,31 @@ from solver import Solver
 from data_loader import get_loader
 from torch.backends import cudnn
 import random
+from datetime import datetime
+
+from PIL import Image, ImageFile
 
 def main(config):
     cudnn.benchmark = True
-    config.model_type = 'R2U_Net'#change net to test
+    config.model_type = 'AttU_Net' #'R2U_Net' #'U_Net'#'R2AttU_Net'
+    now = datetime.now()
+    fecha_hora_str = now.strftime('%d/%m/%Y %H:%M')
+
+    file = open("D:/OneDrive/NB Documentos/Proyecto CONACYT/prueba3.txt", "w")
+    file.write("Empezo" + os.linesep)
+    file.write(fecha_hora_str)
+    file.write("Esperando resultados" + os.linesep)
+    file.close()
+    print (now)
+
     if config.model_type not in ['U_Net','R2U_Net','AttU_Net','R2AttU_Net']:
         print('ERROR!! model_type should be selected in U_Net/R2U_Net/AttU_Net/R2AttU_Net')
         print('Your input for model_type was %s'%config.model_type)
         return
+
+    print("model:" + config.model_type)
+
+    ImageFile.LOAD_TRUNCATED_IMAGES = True
 
     # Create directories if not exist
     if not os.path.exists(config.model_path):
@@ -24,7 +41,7 @@ def main(config):
     
     lr = random.random()*0.0005 + 0.0000005
     augmentation_prob= random.random()*0.7
-    epoch = random.choice([2,2,2,2])#[100,150,200,250]
+    epoch = 50 #random.choice([100,150,200,250])
     decay_ratio = random.random()*0.8
     decay_epoch = int(epoch*decay_ratio)
 
@@ -33,8 +50,6 @@ def main(config):
     config.lr = lr
     config.num_epochs_decay = decay_epoch
 
-    #Prueba de Dey
-    
     print(config)
         
     train_loader = get_loader(image_path=config.train_path,
@@ -62,8 +77,18 @@ def main(config):
     # Train and sample the images
     if config.mode == 'train':
         solver.train()
-    elif config.mode == 'test':
+    elif config.mode == 'test':   ### comente para probar
         solver.test()
+
+
+    now = datetime.now()
+    fecha_hora_str = now.strftime('%d/%m/%Y %H:%M')
+    file = open("D:/OneDrive/NB Documentos/Proyecto CONACYT/prueba4.txt", "w")
+    file.write("Termino" + os.linesep)
+    file.write(fecha_hora_str)
+    file.write("Esperando resultados" + os.linesep)
+    file.close()
+    print (now)
 
 
 if __name__ == '__main__':
@@ -92,11 +117,11 @@ if __name__ == '__main__':
     # misc
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--model_type', type=str, default='U_Net', help='U_Net/R2U_Net/AttU_Net/R2AttU_Net')
-    parser.add_argument('--model_path', type=str, default='./models')
-    parser.add_argument('--train_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/train/')
-    parser.add_argument('--valid_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/valid/')
-    parser.add_argument('--test_path', type=str, default='/content/gdrive/MyDrive/Seg-Mela/dataset/test/')
-    parser.add_argument('--result_path', type=str, default='./result/')
+    parser.add_argument('--model_path', type=str, default='D:/OneDrive/NB Documentos/Proyecto CONACYT/Image_Segmentation-master LeeJunHyun/Image_Segmentation-master/models')
+    parser.add_argument('--train_path', type=str, default='D:/OneDrive/NB Documentos/Proyecto CONACYT/Image_Segmentation-master LeeJunHyun/Image_Segmentation-master/ISIC/dataset/train/')
+    parser.add_argument('--valid_path', type=str, default='D:/OneDrive/NB Documentos/Proyecto CONACYT/Image_Segmentation-master LeeJunHyun/Image_Segmentation-master/ISIC/dataset/valid/')
+    parser.add_argument('--test_path', type=str, default='D:/OneDrive/NB Documentos/Proyecto CONACYT/Image_Segmentation-master LeeJunHyun/Image_Segmentation-master/ISIC/dataset/test/')
+    parser.add_argument('--result_path', type=str, default='D:/OneDrive/NB Documentos/Proyecto CONACYT/Image_Segmentation-master LeeJunHyun/Image_Segmentation-master/result/')
 
     parser.add_argument('--cuda_idx', type=int, default=1)
 

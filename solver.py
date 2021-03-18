@@ -111,13 +111,17 @@ class Solver(object):
 		#====================================== Training ===========================================#
 		#===========================================================================================#
 		
-		unet_path = os.path.join(self.model_path, '%s-%d-%.4f-%d-%.4f.pkl' %(self.model_type,self.num_epochs,self.lr,self.num_epochs_decay,self.augmentation_prob))
-
+		#unet_path = os.path.join(self.model_path, '%s-%d-%.4f-%d-%.4f.pkl' %(self.model_type,self.num_epochs,self.lr,self.num_epochs_decay,self.augmentation_prob))
+		unet_path = os.path.join(self.model_path,'AttU_Net-50-0.0001-12-0.5995.pkl')
+		
+		print (unet_path)
+		
 		# U-Net Train
 		if os.path.isfile(unet_path):
 			# Load the pretrained Encoder
 			self.unet.load_state_dict(torch.load(unet_path))
 			print('%s is Successfully Loaded from %s'%(self.model_type,unet_path))
+
 		else:
 			# Train for Encoder
 			lr = self.lr
@@ -228,7 +232,7 @@ class Solver(object):
 
 				print('[Validation] Acc: %.4f, SE: %.4f, SP: %.4f, PC: %.4f, F1: %.4f, JS: %.4f, DC: %.4f'%(acc,SE,SP,PC,F1,JS,DC))
 				
-				'''
+				
 				torchvision.utils.save_image(images.data.cpu(),
 											os.path.join(self.result_path,
 														'%s_valid_%d_image.png'%(self.model_type,epoch+1)))
@@ -239,9 +243,19 @@ class Solver(object):
 											os.path.join(self.result_path,
 														'%s_valid_%d_GT.png'%(self.model_type,epoch+1)))
 				'''
-
-
-				# Save Best U-Net model
+				#Para guardar modelo y pesos ---- ACTUAL
+				epoca_actual = epoch
+				model_actual= self.unet.state_dict()
+				print('Actual %s model score : %.4f'%(self.model_type,best_unet_score))
+				torch.save({
+            				'epoch': epoca_actual,
+            				'model_state_dict': model_actual,
+            				###'optimizer_state_dict': optimizer.state_dict(), ## no reconoce
+            				'loss': loss
+            				}, unet_path)
+				'''
+				
+				# Save Best U-Net model ---- solo si es mejor que el modelo anterior
 				if unet_score > best_unet_score:
 					best_unet_score = unet_score
 					best_epoch = epoch

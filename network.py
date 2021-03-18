@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+#import torch.nn.functional as F
 from torch.nn import init
 
 def init_weights(net, init_type='normal', gain=0.02):
@@ -121,7 +121,7 @@ class Attention_block(nn.Module):
         self.psi = nn.Sequential(
             nn.Conv2d(F_int, 1, kernel_size=1,stride=1,padding=0,bias=True),
             nn.BatchNorm2d(1),
-            nn.Sigmoid()
+            torch.sigmoid()
         )
         
         self.relu = nn.ReLU(inplace=True)

@@ -6,7 +6,6 @@ import torch
 import torchvision
 from torch import optim
 from torch.autograd import Variable
-import torch.nn.functional as F
 from evaluation import *
 from network import U_Net,R2U_Net,AttU_Net,R2AttU_Net
 import csv
@@ -79,11 +78,11 @@ class Solver(object):
 		print(name)
 		print("The number of parameters: {}".format(num_params))
 
-	def to_data(self, x):
-		"""Convert variable to tensor."""
-		if torch.cuda.is_available():
-			x = x.cpu()
-		return x.data
+	# def to_data(self, x):
+	# 	"""Convert variable to tensor."""
+	# 	if torch.cuda.is_available():
+	# 		x = x.cpu()
+	# 	return x.data
 
 	def update_lr(self, g_lr, d_lr):
 		for param_group in self.optimizer.param_groups:
@@ -272,7 +271,7 @@ class Solver(object):
 
 				images = images.to(self.device)
 				GT = GT.to(self.device)
-				SR = F.sigmoid(self.unet(images))
+				SR = torch.sigmoid(self.unet(images))
 				acc += get_accuracy(SR,GT)
 				SE += get_sensitivity(SR,GT)
 				SP += get_specificity(SR,GT)

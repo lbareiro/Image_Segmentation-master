@@ -10,9 +10,8 @@ from evaluation import *
 from network import U_Net,R2U_Net,AttU_Net,R2AttU_Net
 import csv
 
-
 class Solver(object):
-	def __init__(self, config, train_loader, valid_loader, test_loader):
+    	def __init__(self, config, train_loader, valid_loader, test_loader):
 
 		# Data loader
 		self.train_loader = train_loader
@@ -67,41 +66,9 @@ class Solver(object):
 									  self.lr, [self.beta1, self.beta2])
 		self.unet.to(self.device)
 
-		# self.print_network(self.unet, self.model_type)
-
-	def print_network(self, model, name):
-		"""Print out the network information."""
-		num_params = 0
-		for p in model.parameters():
-			num_params += p.numel()
-		print(model)
-		print(name)
-		print("The number of parameters: {}".format(num_params))
-
-	# def to_data(self, x):
-	# 	"""Convert variable to tensor."""
-	# 	if torch.cuda.is_available():
-	# 		x = x.cpu()
-	# 	return x.data
-
-	def update_lr(self, g_lr, d_lr):
-		for param_group in self.optimizer.param_groups:
-			param_group['lr'] = lr
-
 	def reset_grad(self):
 		"""Zero the gradient buffers."""
 		self.unet.zero_grad()
-
-	def compute_accuracy(self,SR,GT):
-		SR_flat = SR.view(-1)
-		GT_flat = GT.view(-1)
-
-		acc = GT_flat.data.cpu()==(SR_flat.data.cpu()>0.5)
-
-	def tensor2img(self,x):
-		img = (x[:,0,:,:]>x[:,1,:,:]).float()
-		img = img*255
-		return img
 
 
 	def train(self):
@@ -110,18 +77,20 @@ class Solver(object):
 		#====================================== Training ===========================================#
 		#===========================================================================================#
 		
-		unet_path = os.path.join(self.model_path, '%s-%d-%.4f-%d-%.4f.pkl' %(self.model_type,self.num_epochs,self.lr,self.num_epochs_decay,self.augmentation_prob))
-
+		unet_path = os.path.join(self.model_path, '%s-%d-%.4f-%d-%.4f.pkl' %(self.model_type,self.num_epochs,self.lr,self.num_epochs_decay,self.augmentation_prob))		
+		print (unet_path)
+		
 		# U-Net Train
 		if os.path.isfile(unet_path):
 			# Load the pretrained Encoder
 			self.unet.load_state_dict(torch.load(unet_path))
 			print('%s is Successfully Loaded from %s'%(self.model_type,unet_path))
+
 		else:
 			# Train for Encoder
 			lr = self.lr
 			best_unet_score = 0.
-			print('DEVICE %s'%self.device)
+			
 			for epoch in range(self.num_epochs):
 
 				self.unet.train(True)
@@ -201,7 +170,6 @@ class Solver(object):
 				JS = 0.		# Jaccard Similarity
 				DC = 0.		# Dice Coefficient
 				length=0
-				print('DEVICE %s'%self.device)
 				for i, (images, GT) in enumerate(self.valid_loader):
 
 					images = images.to(self.device)
@@ -228,7 +196,7 @@ class Solver(object):
 
 				print('[Validation] Acc: %.4f, SE: %.4f, SP: %.4f, PC: %.4f, F1: %.4f, JS: %.4f, DC: %.4f'%(acc,SE,SP,PC,F1,JS,DC))
 				
-				'''
+				
 				torchvision.utils.save_image(images.data.cpu(),
 											os.path.join(self.result_path,
 														'%s_valid_%d_image.png'%(self.model_type,epoch+1)))
@@ -238,10 +206,20 @@ class Solver(object):
 				torchvision.utils.save_image(GT.data.cpu(),
 											os.path.join(self.result_path,
 														'%s_valid_%d_GT.png'%(self.model_type,epoch+1)))
-				'''
-
-
-				# Save Best U-Net model
+				
+				#Para guardar modelo y pesos ---- ACTUAL
+				epoca_actual = epoch
+				model_actual= self.unet.state_dict()
+				print('Actual %s model score : %.4f'%(self.model_type,best_unet_score))
+				torch.save({
+            				'epoch': epoca_actual,
+            				'model_state_dict': model_actual,
+            				###'optimizer_state_dict': optimizer.state_dict(), ## no reconoce
+            				'loss': loss
+            				}, unet_path)
+				
+				
+				# Save Best U-Net model ---- solo si es mejor que el modelo anterior
 				if unet_score > best_unet_score:
 					best_unet_score = unet_score
 					best_epoch = epoch
@@ -266,7 +244,6 @@ class Solver(object):
 			JS = 0.		# Jaccard Similarity
 			DC = 0.		# Dice Coefficient
 			length=0
-			print('DEVICE %s'%self.device)
 			for i, (images, GT) in enumerate(self.valid_loader):
 
 				images = images.to(self.device)
@@ -296,6 +273,3 @@ class Solver(object):
 			wr = csv.writer(f)
 			wr.writerow([self.model_type,acc,SE,SP,PC,F1,JS,DC,self.lr,best_epoch,self.num_epochs,self.num_epochs_decay,self.augmentation_prob])
 			f.close()
-			
-
-			
